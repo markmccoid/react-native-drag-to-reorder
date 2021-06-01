@@ -120,16 +120,6 @@ const MoveableItem = ({
       }
     }
   );
-  // useAnimatedReaction(
-  //   () => positions.value[id],
-  //   (newIndex, oldIndex) => {
-  //     if (!moving.value) {
-  //       console.log("newIndex", newIndex, oldIndex);
-  //       const pos = newIndex * itemHeight;
-  //       translateY.value = withSpring(pos);
-  //     }
-  //   }
-  // );
 
   const gestureHandler = useAnimatedGestureHandler<
     PanGestureHandlerGestureEvent,
@@ -247,7 +237,7 @@ const MoveableItem = ({
         </MotiView>
       )}
       <PanGestureHandler onGestureEvent={gestureHandler}>
-        <Animated.View style={{ borderBottomWidth: 1 }}>
+        <Animated.View>
           <Handle />
         </Animated.View>
       </PanGestureHandler>

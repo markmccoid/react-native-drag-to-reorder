@@ -10,7 +10,7 @@ import DefaultHandle from "./Handle";
 import MoveableItem from "./MoveableItem";
 import { Positions } from "./helperFunctions";
 
-export type ScrollFunctions = {
+export type TScrollFunctions = {
   scrollToEnd: () => void;
   scrollToStart: () => void;
 };
@@ -23,7 +23,7 @@ interface Props {
   enableHapticFeedback?: boolean;
   enableDragIndicator?: boolean;
   scrollStyles?: ViewStyle;
-  getScrollFunctions?: (funtionObj: ScrollFunctions) => void;
+  getScrollFunctions?: (funtionObj: TScrollFunctions) => void;
   children:
     | React.ReactElement<{ id: number | string }>[]
     | React.ReactElement<{ id: number | string }>;
@@ -71,19 +71,24 @@ const DragDropEntryChildren = ({
   }, []);
 
   // When scrollview gets children added or removed got to end or start of list
-  React.useEffect(() => {
-    // Item has been added (more items than before)
-    if (numberOfItems > prevNumberOfItems.current && scrollViewRef.current) {
-      scrollViewRef.current.scrollToEnd();
-    } else if (numberOfItems < prevNumberOfItems.current && scrollViewRef.current) {
-      //Item has been removed
-      const topBound = numberOfItems * itemHeight - containerHeight;
-      if (scrollY.value > topBound) {
-        scrollViewRef.current.scrollToEnd();
-      }
-    }
-    prevNumberOfItems.current = numberOfItems;
-  }, [numberOfItems]);
+  //! NOT WORKING -- Think the list is rerendered when item removed/added AFTER this code runs.
+  //! This might also have something to do with backend store???
+  // React.useEffect(() => {
+  //   // Item has been added (more items than before)
+  //   if (numberOfItems > prevNumberOfItems.current && scrollViewRef.current) {
+  //     console.log("Scrolling To End >");
+  //     scrollViewRef.current.scrollTo({ y: 0, animated: true });
+  //   } else if (numberOfItems < prevNumberOfItems.current && scrollViewRef.current) {
+  //     //Item has been removed
+  //     const topBound = numberOfItems * itemHeight - containerHeight;
+  //     console.log("SY", scrollY.value, topBound);
+  //     if (scrollY.value > topBound) {
+  //       console.log("Scrolling To End <");
+  //       scrollViewRef.current.scrollToEnd();
+  //     }
+  //   }
+  //   prevNumberOfItems.current = numberOfItems;
+  // }, [numberOfItems]);
 
   // Wrap each child item in the MoveableItem component.
   const moveableItems = React.Children.map(children, (child) => {

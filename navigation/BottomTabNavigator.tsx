@@ -63,7 +63,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{ headerTitle: "Tab One Title" }}
+        options={{ headerTitle: "Drag and Drop Example" }}
       />
     </TabOneStack.Navigator>
   );

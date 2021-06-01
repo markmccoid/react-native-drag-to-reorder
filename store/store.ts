@@ -1,8 +1,9 @@
 import create, { UseStore } from "zustand";
 import sortBy from "lodash/sortBy";
+import { Positions, updatePositionArrayField } from "../components/DragDrop/helperFunctions";
 
 export type ItemType = {
-  id: number;
+  id: number | string;
   name: string;
   pos: number;
 };
@@ -11,6 +12,7 @@ type StoreState = {
   itemList: ItemType[];
   addItem: (name: string) => void;
   removeItem: () => void;
+  removeItemById: (id) => void;
   updateItemList: (newList: ItemType[] | undefined) => void;
   updatePositions: (positions: Positions) => void;
   updatePositions2: (positions: Positions) => void;
@@ -18,20 +20,19 @@ type StoreState = {
 
 export const useStore = create<StoreState>((set) => ({
   itemList: [
-    { id: 1, name: "mark", pos: 0 },
-    { id: 2, name: "lori", pos: 1 },
-    { id: 3, name: "haley", pos: 2 },
-    { id: 4, name: "hunter", pos: 3 },
-    { id: 5, name: "Abby", pos: 4 },
-    { id: 6, name: "Ellie", pos: 5 },
-    { id: 7, name: "2-mark", pos: 6 },
-    { id: 8, name: "2-lori", pos: 7 },
-    { id: 9, name: "2-haley", pos: 8 },
-    { id: 10, name: "2-hunter", pos: 9 },
-    { id: 11, name: "2-Abby", pos: 10 },
-    { id: 12, name: "2-Ellie", pos: 11 },
-    { id: 13, name: "Next tolast", pos: 12 },
-    { id: 14, name: "last", pos: 13 },
+    { id: "a", name: "Coconut Milk", pos: 0 },
+    { id: "b", name: "Lettuce", pos: 1 },
+    { id: "c", name: "Walnuts", pos: 2 },
+    { id: "d", name: "Chips", pos: 3 },
+    { id: "e", name: "Ice Cream", pos: 4 },
+    { id: "f", name: "Carrots", pos: 5 },
+    { id: "g", name: "Onions", pos: 6 },
+    { id: "h", name: "Cheese", pos: 7 },
+    { id: "i", name: "Frozen Dinners", pos: 8 },
+    { id: "j", name: "Yogurt", pos: 9 },
+    { id: "k", name: "Kombucha", pos: 10 },
+    { id: "l", name: "Lemons", pos: 11 },
+    { id: "m", name: "Bread", pos: 12 },
   ],
   addItem: (name) =>
     set((state) => ({
@@ -42,6 +43,13 @@ export const useStore = create<StoreState>((set) => ({
     })),
   removeItem: () =>
     set((state) => ({ itemList: [...state.itemList.slice(0, state.itemList.length - 1)] })),
+  removeItemById: (id) =>
+    set((state) => ({
+      itemList: updatePositionArrayField(
+        [...state.itemList.filter((item) => item.id !== id)],
+        "pos"
+      ),
+    })),
   updateItemList: (newList: ItemType[] | undefined) =>
     set((state) => ({ itemList: newList || [] })),
   updatePositions: (positions: Positions) =>

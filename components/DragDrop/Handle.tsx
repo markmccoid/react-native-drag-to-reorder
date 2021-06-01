@@ -15,7 +15,11 @@ const DefaultHandle: React.FC = () => (
   <View
     style={{
       borderRightWidth: 1,
-      borderRightColor: "black",
+      borderRightColor: "#aaa",
+      borderBottomWidth: 0.5,
+      borderBottomColor: "#aaa",
+      borderTopWidth: 0.5,
+      borderTopColor: "#aaa",
       height: "100%",
       justifyContent: "center",
       paddingHorizontal: 5,

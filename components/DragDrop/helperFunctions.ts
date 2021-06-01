@@ -1,5 +1,3 @@
-import { Positions } from "../../store/store";
-
 interface BaseArray {
   id: string | number;
 }
@@ -41,3 +39,7 @@ export function sortArray<T extends BaseArray>(
 
 // USAGE
 // sortArray(positions, itemList, 'pos')
+
+export function updatePositionArrayField<T>(baseArray: T[], positionField: string) {
+  return baseArray.map((item, idx) => ({ ...item, [positionField]: idx }));
+}

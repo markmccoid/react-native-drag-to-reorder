@@ -9,7 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useStore } from "../../store/store";
 import MoveableItem from "./MoveableItem";
-import Item from "./Item";
+import Item from "../Item";
 import { ITEM_HEIGHT } from "./constants";
 import { ItemType, Positions } from "../../store/store";
 
