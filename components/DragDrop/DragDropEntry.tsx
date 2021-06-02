@@ -18,7 +18,7 @@ export type TScrollFunctions = {
 interface Props {
   updatePositions: (positions: Positions) => void;
   itemHeight: number;
-  handle?: React.ReactNode;
+  handle?: React.FC;
   handlePosition?: "left" | "right";
   enableHapticFeedback?: boolean;
   enableDragIndicator?: boolean;

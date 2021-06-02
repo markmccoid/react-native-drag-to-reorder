@@ -31,7 +31,7 @@ interface Props {
   handlePosition: "left" | "right";
   positions: Animated.SharedValue<Positions>;
   containerHeight: number;
-  handle: React.ReactNode;
+  handle: React.FC;
   enableHapticFeedback: boolean;
   enableDragIndicator: boolean;
   updatePositions: (positions: Positions) => void;
@@ -98,6 +98,7 @@ const MoveableItem = ({
   useAnimatedReaction(
     () => positions.value[id],
     (newPosition, previousPosition) => {
+      // console.log(positions.value);
       // If the new position is different than the previous state, then set the translateY.value
       if (newPosition !== previousPosition) {
         // If moving set the movingPos state to correct position.

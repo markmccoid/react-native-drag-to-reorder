@@ -1,6 +1,6 @@
-# React Native Drag and Drop
+# React Native Drag to ReOrder
 
-This code can be used to take a list of items and using a ScrollView, display them allowing the user to reorder the list of items via Drag and Drop.
+This code can be used to take a list of items and using a ScrollView, display them allowing the user to reorder the list of items via Drag and Drop. 
 
 I am not sure how to make this into an NPM Module and don't have time currently to research this, but if the following dependancies are installed in a project, you can simply drop the **DragDrop** folder into your project.  I export all the needed types and components from this directory.
 
@@ -30,6 +30,21 @@ There is a helper function, **sortArray**, that is very useful in reordering and
 ```tsx
 import DragDropEntry, { sortArray, TScrollFunctions } from "../components/DragDrop";
 
+const items = itemList: [
+    { id: "a", name: "Coconut Milk", pos: 0 },
+    { id: "b", name: "Lettuce", pos: 1 },
+    { id: "c", name: "Walnuts", pos: 2 },
+    { id: "d", name: "Chips", pos: 3 },
+    { id: "e", name: "Ice Cream", pos: 4 },
+    { id: "f", name: "Carrots", pos: 5 },
+    { id: "g", name: "Onions", pos: 6 },
+    { id: "h", name: "Cheese", pos: 7 },
+    { id: "i", name: "Frozen Dinners", pos: 8 },
+    { id: "j", name: "Yogurt", pos: 9 },
+    { id: "k", name: "Kombucha", pos: 10 },
+    { id: "l", name: "Lemons", pos: 11 },
+    { id: "m", name: "Bread", pos: 12 },
+  ];
 ... 
 
 <DragDropEntry
@@ -65,11 +80,7 @@ It is helpful to see what parts make up the DragDropEntry component.  Here is a 
 
 - **itemHeight** - *Required* - The height of the items that are returned as children of this component.  Needed so that we can calculate where each item should be positions.
 
-- 
-
-- 
-
-- **updatePositions** - *Required* - function that will run after drop that will reorder/update positions.  It will be passed the positions array of objects:
+- **updatePositions** - *Required* - function that will run after drop that will reorder/update positions.  It will be passed the positions array of objects, which you can use to reorder your array OR. you can use the **sortArray** helper function. 
 
   ```javascript
   positions = {
@@ -108,4 +119,46 @@ It is helpful to see what parts make up the DragDropEntry component.  Here is a 
 
   - **scrollFunctions.scrollToEnd()** or **scrollFunctions.scrollToStart()**
 
-  
+
+## sortArray helper function usage
+
+The most common use case for Drag to Reorder will involve an array of items that you want to be able to reorder.  To be practical, you will want to update the new sorted array somewhere to persist the state of that array.
+
+This is what the **updatePositions** property is for.  It accepts a function, which will be called every time your list of items order is changed.  A **positions** object will be passed as the only argument to the function.  You can use this object to sort your own array, or use the sortArray helper function.
+
+First, the shape of the **positions** object:
+
+```typescript
+export type Positions = {
+  [key: string]: number;
+};
+
+// the key is the id in your original array, the value is the current position
+// in the scrollview.
+// 
+const positionExample = {
+  a: 0,
+  c: 3,
+  b: 1,
+  d: 2
+}
+```
+
+**sortArray** accepts the **positions** object, your **item array** and optionally the name of your position field (if you use one).
+
+Here is an example usage:
+
+```tsx
+<DragDropEntry
+	scrollStyles={{ width: "100%", height: "30%", borderWidth: 1, borderColor: "#aaa" }}
+	updatePositions={(positions) =>
+				updateItemList(sortArray<ItemType>(positions, items, "pos"))
+		}
+  ...
+>
+	...
+</DragDropEntry>  
+```
+
+> NOTE: The sort array will always return the passed items array sorted and if your objects in the array include a *position* property.  This is optional and you do NOT need a position key in your object in the array.
+

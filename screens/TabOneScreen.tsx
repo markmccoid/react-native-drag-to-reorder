@@ -37,7 +37,7 @@ export default function TabOneScreen() {
         getScrollFunctions={(functionObj) => setScrollFunctions(functionObj)}
         itemHeight={50}
         handlePosition="left"
-        handle={() => <AltHandle />}
+        handle={AltHandle}
         enableDragIndicator={true}
       >
         {items.map((item, idx) => {
@@ -84,6 +84,21 @@ export default function TabOneScreen() {
           }}
         >
           <Text style={{ color: "white", fontSize: 19 }}>Add New Item</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            padding: 10,
+            borderWidth: 1,
+            margin: 5,
+            backgroundColor: "#0084fa",
+
+            borderRadius: 10,
+          }}
+          onPress={() => {
+            scrollFunctions?.scrollToStart();
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 19 }}>Scroll To Start</Text>
         </TouchableOpacity>
       </View>
 
