@@ -9,8 +9,10 @@ import DragDropEntry, { sortArray, TScrollFunctions } from "../components/DragDr
 
 import Item from "../components/Item";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { ITEM_HEIGHT } from "../components/DragDrop/constants";
 
 export default function TabOneScreen() {
+  const prevNumberOfItems = React.useRef(0);
   const [newItem, setNewItem] = React.useState("");
   const items = useStore((state) => state.itemList);
   const addItem = useStore((state) => state.addItem);
@@ -19,12 +21,26 @@ export default function TabOneScreen() {
 
   const [scrollFunctions, setScrollFunctions] = React.useState<TScrollFunctions>();
 
+  //! TODO:
+  //! Move the scroll to end on add functionality here just to test it all works as expected.
+  //!OTHER TODO - have different transitions on deletes??
   React.useEffect(() => {
+    console.log("Items length changed", prevNumberOfItems.current, items.length);
     if (scrollFunctions) {
-      scrollFunctions.scrollToEnd();
+      // scrollFunctions.scrollToEnd();
+      const numberOfItems = items.length;
+      if (numberOfItems > prevNumberOfItems.current) {
+        console.log("Scrolling To End >");
+        scrollFunctions.scrollToEnd();
+      } else if (numberOfItems < prevNumberOfItems.current) {
+        //Item has been removed
+        // If you want to scroll to end on delete must check top bound
+        console.log("scroll to start");
+        scrollFunctions.scrollToStart();
+      }
     }
+    prevNumberOfItems.current = items.length;
   }, [items.length]);
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>D & D Grocery List </Text>
@@ -46,7 +62,9 @@ export default function TabOneScreen() {
               key={item.id}
               name={item.name}
               id={item.id}
-              onRemoveItem={() => removeItemById(item.id)}
+              onRemoveItem={() => {
+                removeItemById(item.id);
+              }}
               firstItem={idx === 0 ? true : false}
             />
           );

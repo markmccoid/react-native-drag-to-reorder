@@ -81,6 +81,7 @@ const MoveableItem = ({
   const Handle = handle;
   const moving = useSharedValue(false);
   const [isActive, setIsActive] = useState(false);
+  // Used in the drag indicator to show where the item being dragged is located.
   const [movingPos, setMovingPos] = useState(positions.value[id] + 1);
   const scale = useSharedValue({ x: 1, y: 1 });
   const translateY = useSharedValue(positions.value[id] * itemHeight);
@@ -98,28 +99,35 @@ const MoveableItem = ({
   useAnimatedReaction(
     () => positions.value[id],
     (newPosition, previousPosition) => {
-      // console.log(positions.value);
+      // If newPosition is undefined, this means that the item was deleted, so just return (do nothing)
+      if (newPosition === undefined) {
+        return;
+      }
       // If the new position is different than the previous state, then set the translateY.value
       if (newPosition !== previousPosition) {
-        // If moving set the movingPos state to correct position.
+        // If moving set the movingPos state (for drag indicator) to correct position.
         if (moving.value) {
           runOnJS(setMovingPos)(newPosition + 1);
         }
         // Only move the value if it is not moving (i.e. not the item where the gesture is active)
         if (!moving.value && !initialRender.value) {
-          // translateY.value = withSpring(newPosition * itemHeight);
-          translateY.value = withTiming(newPosition * itemHeight, { duration: 200 });
-          translateX.value = withSequence(
-            withTiming(20, { duration: 150 }),
-            withTiming(0, { duration: 100 })
-          );
+          // animate the moving
+          translateY.value = withSpring(newPosition * itemHeight);
+          //*- Another animation option --
+          // translateY.value = withTiming(newPosition * itemHeight, { duration: 200 });
+          // translateX.value = withSequence(
+          //   withTiming(20, { duration: 150 }),
+          //   withTiming(0, { duration: 100 })
+          // );
+          //*-----------------------------
           runOnJS(setMovingPos)(newPosition + 1);
           // translateY.value = withTiming(newPosition * itemHeight, { duration: 200 });
         } else {
           initialRender.value = false;
         }
       }
-    }
+    },
+    []
   );
 
   const gestureHandler = useAnimatedGestureHandler<
@@ -222,7 +230,7 @@ const MoveableItem = ({
   return (
     <Animated.View style={animatedStyle}>
       {handlePosition === "right" && (
-        <MotiView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           {children}
           <AnimatePresence>
             {isActive && enableDragIndicator && (
@@ -235,7 +243,7 @@ const MoveableItem = ({
               </DragIndicator>
             )}
           </AnimatePresence>
-        </MotiView>
+        </View>
       )}
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View>
@@ -243,7 +251,7 @@ const MoveableItem = ({
         </Animated.View>
       </PanGestureHandler>
       {handlePosition === "left" && (
-        <MotiView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
           {children}
           <AnimatePresence>
             {isActive && enableDragIndicator && (
@@ -256,7 +264,7 @@ const MoveableItem = ({
               </DragIndicator>
             )}
           </AnimatePresence>
-        </MotiView>
+        </View>
       )}
     </Animated.View>
   );

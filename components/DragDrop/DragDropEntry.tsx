@@ -13,6 +13,7 @@ import { Positions } from "./helperFunctions";
 export type TScrollFunctions = {
   scrollToEnd: () => void;
   scrollToStart: () => void;
+  scrollToY: () => void;
 };
 
 interface Props {
@@ -65,26 +66,28 @@ const DragDropEntryChildren = ({
       const scrollFuncs = {
         scrollToEnd: (): void => scrollViewRef.current?.scrollToEnd(),
         scrollToStart: (): void => scrollViewRef.current?.scrollTo({ y: 0, animated: true }),
+        scrollToY: (yPos: number): void =>
+          scrollViewRef.current?.scrollTo({ y: yPos, animated: true }),
       };
       getScrollFunctions(scrollFuncs);
     }
   }, []);
 
-  // When scrollview gets children added or removed got to end or start of list
-  //! NOT WORKING -- Think the list is rerendered when item removed/added AFTER this code runs.
-  //! This might also have something to do with backend store???
+  //! When scrollview gets children added or removed got to end or start of list
+  //! Probably best to use this example in the component calling DragDropEntry
   // React.useEffect(() => {
   //   // Item has been added (more items than before)
   //   if (numberOfItems > prevNumberOfItems.current && scrollViewRef.current) {
   //     console.log("Scrolling To End >");
-  //     scrollViewRef.current.scrollTo({ y: 0, animated: true });
+  //     scrollViewRef.current.scrollToEnd();
   //   } else if (numberOfItems < prevNumberOfItems.current && scrollViewRef.current) {
   //     //Item has been removed
+  //     // If you want to scroll to end on delete must check top bound
   //     const topBound = numberOfItems * itemHeight - containerHeight;
   //     console.log("SY", scrollY.value, topBound);
+  //     scrollViewRef.current.scrollTo({ y: 0, animated: true });
   //     if (scrollY.value > topBound) {
   //       console.log("Scrolling To End <");
-  //       scrollViewRef.current.scrollToEnd();
   //     }
   //   }
   //   prevNumberOfItems.current = numberOfItems;

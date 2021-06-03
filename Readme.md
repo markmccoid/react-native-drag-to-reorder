@@ -117,7 +117,7 @@ It is helpful to see what parts make up the DragDropEntry component.  Here is a 
 
   - Now, the **scrollFunctions** variable can call the following:
 
-  - **scrollFunctions.scrollToEnd()** or **scrollFunctions.scrollToStart()**
+  - **scrollFunctions.scrollToEnd()** or **scrollFunctions.scrollToStart()** or **scrollFunctions.scrollToY(yPos)**
 
 
 ## sortArray helper function usage
