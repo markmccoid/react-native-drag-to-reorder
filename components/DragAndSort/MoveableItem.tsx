@@ -21,6 +21,9 @@ import * as Haptics from "expo-haptics";
 
 import DragIndicator, { DragIndicatorDisplay } from "./DragIndicator";
 
+import dragIndicatorFunc from "./DragIndicatorFunction";
+import DragIndicatorFunc from "./DragIndicatorFunction";
+
 import { Positions } from "./helperFunctions";
 
 interface Props {
@@ -234,13 +237,12 @@ const MoveableItem = ({
           {children}
           <AnimatePresence>
             {isActive && enableDragIndicator && (
-              <DragIndicator itemHeight={itemHeight} fromLeftOrRight="left">
-                <DragIndicatorDisplay
-                  itemHeight={itemHeight}
-                  currentPosition={movingPos}
-                  totalItems={numberOfItems}
-                />
-              </DragIndicator>
+              <DragIndicatorFunc
+                itemHeight={itemHeight}
+                fromLeftOrRight="left"
+                currentPosition={movingPos}
+                totalItems={numberOfItems}
+              />
             )}
           </AnimatePresence>
         </View>
@@ -255,13 +257,12 @@ const MoveableItem = ({
           {children}
           <AnimatePresence>
             {isActive && enableDragIndicator && (
-              <DragIndicator itemHeight={itemHeight} fromLeftOrRight="right">
-                <DragIndicatorDisplay
-                  itemHeight={itemHeight}
-                  currentPosition={movingPos}
-                  totalItems={numberOfItems}
-                />
-              </DragIndicator>
+              <DragIndicatorFunc
+                itemHeight={itemHeight}
+                fromLeftOrRight="right"
+                currentPosition={movingPos}
+                totalItems={numberOfItems}
+              />
             )}
           </AnimatePresence>
         </View>

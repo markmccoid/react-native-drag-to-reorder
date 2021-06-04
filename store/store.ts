@@ -1,6 +1,9 @@
 import create, { UseStore } from "zustand";
 import sortBy from "lodash/sortBy";
-import { Positions, updatePositionArrayField } from "../components/DragDrop/helperFunctions";
+import {
+  Positions,
+  updatePositionArrayField,
+} from "../components/DragAndSort/helperFunctions";
 
 export type ItemType = {
   id: number | string;

@@ -5,11 +5,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Text, View } from "../components/Themed";
 
-import DragDropEntry, { sortArray, TScrollFunctions } from "../components/DragDrop";
+import DragDropEntry, { sortArray, TScrollFunctions } from "../components/DragAndSort";
 
 import Item from "../components/Item";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { ITEM_HEIGHT } from "../components/DragDrop/constants";
+import { ITEM_HEIGHT } from "../components/constants";
 
 export default function TabOneScreen() {
   const prevNumberOfItems = React.useRef(0);
@@ -25,7 +25,6 @@ export default function TabOneScreen() {
   //! Move the scroll to end on add functionality here just to test it all works as expected.
   //!OTHER TODO - have different transitions on deletes??
   React.useEffect(() => {
-    console.log("Items length changed", prevNumberOfItems.current, items.length);
     if (scrollFunctions) {
       // scrollFunctions.scrollToEnd();
       const numberOfItems = items.length;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Image, Platform, StatusBar, Text, TouchableOpacity, View } from "react-native";
-import { ITEM_HEIGHT } from "./DragDrop/constants";
+import { ITEM_HEIGHT } from "./constants";
 import { MaterialIcons } from "@expo/vector-icons";
 
 //ADD Delete icon and delete function from Store so Deletoing of item can be tested.
