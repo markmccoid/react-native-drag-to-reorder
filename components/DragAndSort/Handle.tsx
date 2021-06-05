@@ -21,6 +21,7 @@ const DefaultHandle: React.FC = () => (
       borderTopWidth: 0.5,
       borderTopColor: "#aaa",
       height: "100%",
+      backgroundColor: "white",
       justifyContent: "center",
       paddingHorizontal: 5,
     }}

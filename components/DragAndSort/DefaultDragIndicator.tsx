@@ -11,7 +11,7 @@ import { MotiView, Text, AnimatePresence } from "moti";
  * The DragIndicator is simply a view that moves in and out of the screen.  It does have some
  * styling on it too...  Maybe just let the style for this be passed through???
  */
-const DragIndicator: React.FC<{
+const DefaultDragIndicator: React.FC<{
   itemHeight: number;
   fromLeftOrRight?: "left" | "right";
   currentPosition: number;
@@ -65,7 +65,7 @@ const DragIndicator: React.FC<{
   );
 };
 
-export default DragIndicator;
+export default DefaultDragIndicator;
 
 const DragIndicatorDisplay: React.FC<{
   currentPosition: number;

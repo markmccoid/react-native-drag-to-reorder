@@ -21,8 +21,8 @@ import * as Haptics from "expo-haptics";
 
 import DragIndicator, { DragIndicatorDisplay } from "./DragIndicator";
 
-import dragIndicatorFunc from "./DragIndicatorFunction";
-import DragIndicatorFunc from "./DragIndicatorFunction";
+import dragIndicatorFunc from "./DefaultDragIndicator";
+// import DragIndicatorFunc from "./DragIndicatorFunction";
 
 import { Positions } from "./helperFunctions";
 
@@ -37,6 +37,7 @@ interface Props {
   handle: React.FC;
   enableHapticFeedback: boolean;
   enableDragIndicator: boolean;
+  dragIndicator: React.FC;
   updatePositions: (positions: Positions) => void;
   children: React.ReactElement<{ id: number | string }>;
   itemHeight: number;
@@ -79,9 +80,11 @@ const MoveableItem = ({
   itemHeight,
   handle,
   enableDragIndicator,
+  dragIndicator,
   enableHapticFeedback,
 }: Props) => {
   const Handle = handle;
+  const DragIndicatorFunc = dragIndicatorFunc;
   const moving = useSharedValue(false);
   const [isActive, setIsActive] = useState(false);
   // Used in the drag indicator to show where the item being dragged is located.

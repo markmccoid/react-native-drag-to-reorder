@@ -52,7 +52,7 @@ export default function TabOneScreen() {
         getScrollFunctions={(functionObj) => setScrollFunctions(functionObj)}
         itemHeight={50}
         handlePosition="left"
-        handle={AltHandle}
+        // handle={AltHandle}
         enableDragIndicator={true}
       >
         {items.map((item, idx) => {
@@ -92,7 +92,6 @@ export default function TabOneScreen() {
             borderWidth: 1,
             margin: 5,
             backgroundColor: "#0084fa",
-
             borderRadius: 10,
           }}
           onPress={() => {
