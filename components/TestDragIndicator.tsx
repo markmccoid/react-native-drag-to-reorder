@@ -1,13 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { MotiView, Text, AnimatePresence } from "moti";
-
-export type DragIndicatorProps = {
-  itemHeight: number;
-  fromLeftOrRight?: "left" | "right";
-  currentPosition: number;
-  totalItems: number;
-};
+import { DragIndicatorProps } from "./DragAndSort/DefaultDragIndicator";
 /**.
  * Currently this single component encapsulates the drag indicator.
  * It is used in the MoveableItem.tsx.
@@ -31,13 +25,14 @@ const DefaultDragIndicator: React.FC<DragIndicatorProps> = ({
       style={{
         position: "absolute",
         [fromLeftOrRight]: 0,
-        backgroundColor: "#eee",
+        top: 0,
+        backgroundColor: "white",
         borderLeftWidth: 1,
         borderRightWidth: 1,
         borderWidth: 1,
         marginTop: (itemHeight - itemHeight / 1.5) / 2,
         height: itemHeight / 1.5,
-        borderRadius: 10,
+        borderRadius: 15,
       }}
       from={{
         opacity: 0.5,

@@ -10,7 +10,7 @@ import DefaultHandle from "./Handle";
 import MoveableItem from "./MoveableItem";
 import { Positions } from "./helperFunctions";
 
-import defaultDragIndicator from "./DefaultDragIndicator";
+import defaultDragIndicator, { DragIndicatorProps } from "./DefaultDragIndicator";
 
 export type TScrollFunctions = {
   scrollToEnd: () => void;
@@ -24,7 +24,7 @@ interface Props {
   handle?: React.FC;
   handlePosition?: "left" | "right";
   enableHapticFeedback?: boolean;
-  dragIndicator?: React.FC;
+  dragIndicator?: React.FC<DragIndicatorProps>;
   enableDragIndicator?: boolean;
   scrollStyles?: ViewStyle;
   getScrollFunctions?: (funtionObj: TScrollFunctions) => void;
@@ -42,6 +42,7 @@ const DragDropEntryChildren = ({
   getScrollFunctions,
   enableHapticFeedback = true,
   enableDragIndicator = false,
+  dragIndicator = defaultDragIndicator,
   children,
 }: Props) => {
   //*Scrollview animated ref
@@ -114,7 +115,7 @@ const DragDropEntryChildren = ({
         handlePosition={handlePosition}
         enableHapticFeedback={enableHapticFeedback}
         enableDragIndicator={enableDragIndicator}
-        dragIndicator={defaultDragIndicator}
+        dragIndicator={dragIndicator}
       >
         {child}
       </MoveableItem>

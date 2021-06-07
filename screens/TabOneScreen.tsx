@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, View } from "../components/Themed";
 
 import DragDropEntry, { sortArray, TScrollFunctions } from "../components/DragAndSort";
+import testDragIndicator from "../components/TestDragIndicator";
 
 import Item from "../components/Item";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -22,24 +23,27 @@ export default function TabOneScreen() {
   const [scrollFunctions, setScrollFunctions] = React.useState<TScrollFunctions>();
 
   //! TODO:
-  //! Move the scroll to end on add functionality here just to test it all works as expected.
   //!OTHER TODO - have different transitions on deletes??
-  React.useEffect(() => {
-    if (scrollFunctions) {
-      // scrollFunctions.scrollToEnd();
-      const numberOfItems = items.length;
-      if (numberOfItems > prevNumberOfItems.current) {
-        console.log("Scrolling To End >");
-        scrollFunctions.scrollToEnd();
-      } else if (numberOfItems < prevNumberOfItems.current) {
-        //Item has been removed
-        // If you want to scroll to end on delete must check top bound
-        console.log("scroll to start");
-        scrollFunctions.scrollToStart();
-      }
-    }
-    prevNumberOfItems.current = items.length;
-  }, [items.length]);
+  //* The useEffect below is used to scroll to the end or start
+  //* on adds and deletes of items.  Without this the scroll will not
+  //* move on adds/deletes of items
+  // React.useEffect(() => {
+  //   if (scrollFunctions) {
+  //     // scrollFunctions.scrollToEnd();
+  //     const numberOfItems = items.length;
+  //     if (numberOfItems > prevNumberOfItems.current) {
+  //       console.log("Scrolling To End >");
+  //       scrollFunctions.scrollToEnd();
+  //     } else if (numberOfItems < prevNumberOfItems.current) {
+  //       //Item has been removed
+  //       // If you want to scroll to end on delete must check top bound
+  //       console.log("scroll to start");
+  //       scrollFunctions.scrollToStart();
+  //     }
+  //   }
+  //   prevNumberOfItems.current = items.length;
+  // }, [items.length]);
+  //************************************************* */
   return (
     <View style={styles.container}>
       <Text style={styles.title}>D & D Grocery List </Text>
@@ -54,6 +58,7 @@ export default function TabOneScreen() {
         handlePosition="left"
         // handle={AltHandle}
         enableDragIndicator={true}
+        dragIndicator={testDragIndicator}
       >
         {items.map((item, idx) => {
           return (

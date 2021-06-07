@@ -19,10 +19,7 @@ import {
 } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 
-import DragIndicator, { DragIndicatorDisplay } from "./DragIndicator";
-
-import dragIndicatorFunc from "./DefaultDragIndicator";
-// import DragIndicatorFunc from "./DragIndicatorFunction";
+import { DragIndicatorProps } from "./DefaultDragIndicator";
 
 import { Positions } from "./helperFunctions";
 
@@ -37,13 +34,13 @@ interface Props {
   handle: React.FC;
   enableHapticFeedback: boolean;
   enableDragIndicator: boolean;
-  dragIndicator: React.FC;
+  dragIndicator: React.FC<DragIndicatorProps>;
   updatePositions: (positions: Positions) => void;
-  children: React.ReactElement<{ id: number | string }>;
   itemHeight: number;
+  children: React.ReactElement<{ id: number | string }>;
 }
 //*-----------------
-//*= HELPER FUCTIONS
+//*= HELPER FUCTIONS - Using redash's clamp instead
 // function clamp(value: number, lowerBound: number, upperBound: number) {
 //   "worklet";
 //   return Math.max(lowerBound, Math.min(value, upperBound));
@@ -84,7 +81,7 @@ const MoveableItem = ({
   enableHapticFeedback,
 }: Props) => {
   const Handle = handle;
-  const DragIndicatorFunc = dragIndicatorFunc;
+  const DragIndicator = dragIndicator;
   const moving = useSharedValue(false);
   const [isActive, setIsActive] = useState(false);
   // Used in the drag indicator to show where the item being dragged is located.
@@ -240,7 +237,7 @@ const MoveableItem = ({
           {children}
           <AnimatePresence>
             {isActive && enableDragIndicator && (
-              <DragIndicatorFunc
+              <DragIndicator
                 itemHeight={itemHeight}
                 fromLeftOrRight="left"
                 currentPosition={movingPos}
@@ -260,7 +257,7 @@ const MoveableItem = ({
           {children}
           <AnimatePresence>
             {isActive && enableDragIndicator && (
-              <DragIndicatorFunc
+              <DragIndicator
                 itemHeight={itemHeight}
                 fromLeftOrRight="right"
                 currentPosition={movingPos}
