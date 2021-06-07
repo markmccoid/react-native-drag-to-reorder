@@ -202,8 +202,6 @@ const MoveableItem = ({
       scale.value = { x: 1, y: 1 };
       translateY.value = withSpring(positions.value[id] * itemHeight);
       runOnJS(updatePositions)(positions.value);
-      //OR IF above doesn't work use:
-      // runOnJS(setMoving)(false);
     },
   });
 
