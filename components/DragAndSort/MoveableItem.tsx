@@ -19,7 +19,7 @@ import {
 } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 
-import { DragIndicatorProps } from "./DefaultDragIndicator";
+import { DragIndicatorProps, DragIndicatorConfig } from "./DefaultDragIndicator";
 
 import { Positions } from "./helperFunctions";
 
@@ -35,6 +35,7 @@ interface Props {
   enableHapticFeedback: boolean;
   enableDragIndicator: boolean;
   dragIndicator: React.FC<DragIndicatorProps>;
+  dragIndicatorConfig: Partial<DragIndicatorConfig>;
   updatePositions: (positions: Positions) => void;
   itemHeight: number;
   children: React.ReactElement<{ id: number | string }>;
@@ -78,6 +79,7 @@ const MoveableItem = ({
   handle,
   enableDragIndicator,
   dragIndicator,
+  dragIndicatorConfig,
   enableHapticFeedback,
 }: Props) => {
   const Handle = handle;
@@ -156,7 +158,15 @@ const MoveableItem = ({
       translateY.value = clamp(ctx.startingY + event.translationY, 0, boundY);
 
       //* Calculation the position based on items current Y value
-      const newPosition = clamp(Math.floor(translateY.value / itemHeight), 0, numberOfItems);
+      //* The translateY.value/itemHeight return a decimal between 0 to numberOfItems
+      //* I add .5 so that the we get a new position at the center of the next item
+      //* whether moving up or down
+      const newPosition = clamp(
+        Math.floor(translateY.value / itemHeight + 0.5),
+        0,
+        numberOfItems
+      );
+
       //* Check to see if we need to set a new position and do it if so
       if (newPosition !== positions.value[id]) {
         positions.value = objectMove(positions.value, positions.value[id], newPosition);
@@ -232,7 +242,7 @@ const MoveableItem = ({
     <Animated.View style={animatedStyle}>
       {handlePosition === "right" && (
         <View style={{ flex: 1 }}>
-          {children}
+          {React.cloneElement(children as React.ReactElement<any>, { isMoving: moving.value })}
           <AnimatePresence>
             {isActive && enableDragIndicator && (
               <DragIndicator
@@ -240,6 +250,7 @@ const MoveableItem = ({
                 fromLeftOrRight="left"
                 currentPosition={movingPos}
                 totalItems={numberOfItems}
+                config={dragIndicatorConfig}
               />
             )}
           </AnimatePresence>
@@ -252,7 +263,7 @@ const MoveableItem = ({
       </PanGestureHandler>
       {handlePosition === "left" && (
         <View style={{ flex: 1 }}>
-          {children}
+          {React.cloneElement(children as React.ReactElement<any>, { isMoving: moving.value })}
           <AnimatePresence>
             {isActive && enableDragIndicator && (
               <DragIndicator
@@ -260,6 +271,7 @@ const MoveableItem = ({
                 fromLeftOrRight="right"
                 currentPosition={movingPos}
                 totalItems={numberOfItems}
+                config={dragIndicatorConfig}
               />
             )}
           </AnimatePresence>

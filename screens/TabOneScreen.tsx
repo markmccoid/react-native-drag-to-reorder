@@ -10,7 +10,6 @@ import testDragIndicator from "../components/TestDragIndicator";
 
 import Item from "../components/Item";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { ITEM_HEIGHT } from "../components/constants";
 
 export default function TabOneScreen() {
   const prevNumberOfItems = React.useRef(0);
@@ -58,7 +57,12 @@ export default function TabOneScreen() {
         handlePosition="left"
         // handle={AltHandle}
         enableDragIndicator={true}
-        dragIndicator={testDragIndicator}
+        dragIndicatorConfig={{
+          translateXDistance: 100,
+          indicatorBackgroundColor: "#abcabcaa",
+          indicatorBorderRadius: 20,
+        }}
+        // dragIndicator={testDragIndicator}
       >
         {items.map((item, idx) => {
           return (

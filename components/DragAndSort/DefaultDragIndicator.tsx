@@ -1,12 +1,29 @@
 import React from "react";
-import { View } from "react-native";
+import { View, ViewStyle } from "react-native";
 import { MotiView, Text, AnimatePresence } from "moti";
+
+export type DragIndicatorConfig = {
+  translateXDistance: number;
+  indicatorBackgroundColor: string;
+  indicatorBorderWidth: number;
+  indicatorBorderColor: string;
+  indicatorBorderRadius: number;
+};
 
 export type DragIndicatorProps = {
   itemHeight: number;
   fromLeftOrRight?: "left" | "right";
   currentPosition: number;
   totalItems: number;
+  config: Partial<DragIndicatorConfig>;
+};
+
+const defaultDragConfig = {
+  translateXDistance: 10,
+  indicatorBorderWidth: 1,
+  indicatorBorderColor: "black",
+  indicatorBackgroundColor: "#eee",
+  indicatorBorderRadius: 10,
 };
 /**.
  * Currently this single component encapsulates the drag indicator.
@@ -23,21 +40,29 @@ const DefaultDragIndicator: React.FC<DragIndicatorProps> = ({
   fromLeftOrRight = "right",
   currentPosition,
   totalItems,
+  config,
 }) => {
   const direction = fromLeftOrRight === "left" ? -1 : 1;
+  const {
+    translateXDistance,
+    indicatorBackgroundColor,
+    indicatorBorderWidth,
+    indicatorBorderColor,
+    indicatorBorderRadius,
+  } = { ...defaultDragConfig, ...config };
 
   return (
     <MotiView
       style={{
         position: "absolute",
         [fromLeftOrRight]: 0,
-        backgroundColor: "#eee",
-        borderLeftWidth: 1,
-        borderRightWidth: 1,
-        borderWidth: 1,
+        backgroundColor: indicatorBackgroundColor ? indicatorBackgroundColor : "#eee",
+        justifyContent: "center",
+        borderWidth: indicatorBorderWidth,
+        borderColor: indicatorBorderColor,
         marginTop: (itemHeight - itemHeight / 1.5) / 2,
         height: itemHeight / 1.5,
-        borderRadius: 10,
+        borderRadius: indicatorBorderRadius,
       }}
       from={{
         opacity: 0.5,
@@ -46,7 +71,7 @@ const DefaultDragIndicator: React.FC<DragIndicatorProps> = ({
       }}
       animate={{
         opacity: 1,
-        translateX: 0,
+        translateX: translateXDistance! * direction * -1,
         // scale: 1,
       }}
       exit={{
@@ -83,7 +108,6 @@ const DragIndicatorDisplay: React.FC<{
     <View
       style={{
         flexDirection: "row",
-        paddingTop: 8,
         paddingRight: 10,
         paddingLeft: 20,
       }}

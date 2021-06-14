@@ -11,14 +11,14 @@ const Item = ({
   id,
   onRemoveItem,
   firstItem,
-}: {
+}: // isMoving,
+{
   name: string;
   id: string | number;
   onRemoveItem?: () => void;
   firstItem: boolean;
 }) => {
   const firstItemStyle = firstItem ? { borderTopWidth: 1, borderTopColor: "#aaa" } : {};
-
   return (
     <View
       style={[

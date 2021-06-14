@@ -21,6 +21,8 @@ The usage is to simply pass you items to be sorted and children to the **DragDro
 1. Have an **id** prop
 2. Have a height that MATCHES the **itemHeight** props value.
 
+> NOTE: A prop called **isMoving** will be injected into each item.  You can use this prop to change behavior when item is moving versus not.
+
 Here is an example of using the component.
 
 The **DragDropEntry** component is the parent component that wrap the children **Items** that you want to be able to drag and drop.
@@ -80,7 +82,7 @@ It is helpful to see what parts make up the DragDropEntry component.  Here is a 
 
 - **itemHeight** - *Required* - The height of the items that are returned as children of this component.  Needed so that we can calculate where each item should be positions.
 
-- **updatePositions** - *Required* - function that will run after drop that will reorder/update positions.  It will be passed the positions array of objects, which you can use to reorder your array OR. you can use the **sortArray** helper function. 
+- **updatePositions** - *Required* - function that will run after drop that will reorder/update positions.  It will be passed the positions array of objects, which you can use to reorder your array OR. you can use the [**sortArray**](#sortarray-helper-function-usage) helper function. 
 
   ```javascript
   positions = {
@@ -97,6 +99,29 @@ It is helpful to see what parts make up the DragDropEntry component.  Here is a 
 - **handlePosition** - *Optional* - **default is 'left'** - either 'left' or 'right'.  Positions the handle component on the left or right of each Item component.
 
 - **enableDragIndicator** - *Optional* - **default is 'false'** - Boolean that turns the drag indicator on or off.  The position of the indicator is decided by the handle position.  It will be *opposite* what the handlePosition is.
+
+- **dragIndicator** - *Optional* - React component to be used for drag indicator. The component used will be passed the following props:
+
+  ```jsx
+  <DragIndicator
+    itemHeight={itemHeight}
+    fromLeftOrRight="left" // Or right depending on the handlePosition. This is opposite of the handle position
+    currentPosition={movingPos}
+    totalItems={numberOfItems}
+    config={dragIndicatorConfig}
+  />
+  ```
+
+- **dragIndicatorConfig** - common config options passed to the dragIndicator.  By changing the config items, you may not need to create a custom **dragIndicator**
+
+  - **translateXDistance** - How far should the drag indicator travel into the item
+    ![2021-06-12_23-48-07](./dragConfig-translatex.png)
+  -   **indicatorBorderWidth**
+  -  **indicatorBorderColor**
+  - **indicatorBackgroundColor**
+  - **indicatorBorderRadius**
+
+- **enableHapticFeedback** - *boolean* - Enables haptic feedback when moving an item.
 
 - **scrollStyles** - *Optional* - styles that will be spread on ScrollView styles prop.
 
@@ -118,7 +143,6 @@ It is helpful to see what parts make up the DragDropEntry component.  Here is a 
   - Now, the **scrollFunctions** variable can call the following:
 
   - **scrollFunctions.scrollToEnd()** or **scrollFunctions.scrollToStart()** or **scrollFunctions.scrollToY(yPos)**
-
 
 ## sortArray helper function usage
 

@@ -10,7 +10,10 @@ import DefaultHandle from "./Handle";
 import MoveableItem from "./MoveableItem";
 import { Positions } from "./helperFunctions";
 
-import defaultDragIndicator, { DragIndicatorProps } from "./DefaultDragIndicator";
+import defaultDragIndicator, {
+  DragIndicatorProps,
+  DragIndicatorConfig,
+} from "./DefaultDragIndicator";
 
 export type TScrollFunctions = {
   scrollToEnd: () => void;
@@ -25,6 +28,7 @@ interface Props {
   handlePosition?: "left" | "right";
   enableHapticFeedback?: boolean;
   dragIndicator?: React.FC<DragIndicatorProps>;
+  dragIndicatorConfig: Partial<DragIndicatorConfig>;
   enableDragIndicator?: boolean;
   scrollStyles?: ViewStyle;
   getScrollFunctions?: (funtionObj: TScrollFunctions) => void;
@@ -33,6 +37,13 @@ interface Props {
     | React.ReactElement<{ id: number | string }>;
 }
 
+const defaultDragConfig = {
+  translateXDistance: 10,
+  indicatorBorderWidth: 1,
+  indicatorBorderColor: "black",
+  indicatorBackgroundColor: "#eee",
+  indicatorBorderRadius: 10,
+};
 const DragDropEntryChildren = ({
   updatePositions,
   itemHeight,
@@ -43,6 +54,7 @@ const DragDropEntryChildren = ({
   enableHapticFeedback = true,
   enableDragIndicator = false,
   dragIndicator = defaultDragIndicator,
+  dragIndicatorConfig,
   children,
 }: Props) => {
   //*Scrollview animated ref
@@ -98,28 +110,32 @@ const DragDropEntryChildren = ({
   // }, [numberOfItems]);
 
   // Wrap each child item in the MoveableItem component.
+
   const moveableItems = React.Children.map(children, (child) => {
     const id = child.props.id;
-    return (
-      <MoveableItem
-        id={id}
-        key={id}
-        scrollY={scrollY}
-        scrollViewRef={scrollViewRef}
-        numberOfItems={numberOfItems}
-        itemHeight={itemHeight}
-        positions={positions}
-        containerHeight={containerHeight}
-        updatePositions={updatePositions}
-        handle={handle}
-        handlePosition={handlePosition}
-        enableHapticFeedback={enableHapticFeedback}
-        enableDragIndicator={enableDragIndicator}
-        dragIndicator={dragIndicator}
-      >
-        {child}
-      </MoveableItem>
-    );
+    if (React.isValidElement(child)) {
+      return (
+        <MoveableItem
+          id={id}
+          key={id}
+          scrollY={scrollY}
+          scrollViewRef={scrollViewRef}
+          numberOfItems={numberOfItems}
+          itemHeight={itemHeight}
+          positions={positions}
+          containerHeight={containerHeight}
+          updatePositions={updatePositions}
+          handle={handle}
+          handlePosition={handlePosition}
+          enableHapticFeedback={enableHapticFeedback}
+          enableDragIndicator={enableDragIndicator}
+          dragIndicator={dragIndicator}
+          dragIndicatorConfig={dragIndicatorConfig}
+        >
+          {child}
+        </MoveableItem>
+      );
+    }
   });
 
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
 import { MotiView, Text, AnimatePresence } from "moti";
-import { DragIndicatorProps } from "./DragAndSort/DefaultDragIndicator";
+import { DragIndicatorProps } from "./DragAndSort";
 /**.
  * Currently this single component encapsulates the drag indicator.
  * It is used in the MoveableItem.tsx.
