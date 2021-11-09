@@ -9,6 +9,8 @@ import Animated, {
 import DefaultHandle from "./Handle";
 import MoveableItem from "./MoveableItem";
 import { Positions } from "./helperFunctions";
+// Using context to pass positions object to the moveableitems
+import PositionsProvider from "./DragSortContext";
 
 import defaultDragIndicator, {
   DragIndicatorProps,
@@ -44,7 +46,7 @@ const defaultDragConfig = {
   indicatorBackgroundColor: "#eee",
   indicatorBorderRadius: 10,
 };
-const DragDropEntryChildren = ({
+const DragDropEntry = ({
   updatePositions,
   itemHeight,
   handle = DefaultHandle,
@@ -59,7 +61,14 @@ const DragDropEntryChildren = ({
 }: Props) => {
   //*Scrollview animated ref
   const scrollViewRef = useAnimatedRef<Animated.ScrollView>();
-  const positions = useSharedValue<Positions>({});
+  const positions = useSharedValue<Positions>(
+    Object.assign(
+      {},
+      ...React.Children.map(children, (child, idx) => ({
+        [`${child.props.id}`]: idx,
+      }))
+    )
+  );
   const scrollY = useSharedValue(0);
   const [containerHeight, setContainerHeight] = React.useState(0);
   const handleScroll = useAnimatedScrollHandler((event) => {
@@ -122,7 +131,6 @@ const DragDropEntryChildren = ({
           scrollViewRef={scrollViewRef}
           numberOfItems={numberOfItems}
           itemHeight={itemHeight}
-          positions={positions}
           containerHeight={containerHeight}
           updatePositions={updatePositions}
           handle={handle}
@@ -139,20 +147,22 @@ const DragDropEntryChildren = ({
   });
 
   return (
-    <Animated.ScrollView
-      ref={scrollViewRef}
-      onScroll={handleScroll}
-      scrollEventThrottle={16}
-      style={scrollStyles}
-      onLayout={(e) => {
-        setContainerHeight(e.nativeEvent.layout.height);
-      }}
-      contentContainerStyle={{
-        height: numberOfItems * itemHeight,
-      }}
-    >
-      {moveableItems}
-    </Animated.ScrollView>
+    <PositionsProvider positions={positions}>
+      <Animated.ScrollView
+        ref={scrollViewRef}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
+        style={scrollStyles}
+        onLayout={(e) => {
+          setContainerHeight(e.nativeEvent.layout.height);
+        }}
+        contentContainerStyle={{
+          height: numberOfItems * itemHeight,
+        }}
+      >
+        {moveableItems}
+      </Animated.ScrollView>
+    </PositionsProvider>
   );
 };
 
@@ -166,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DragDropEntryChildren;
+export default DragDropEntry;

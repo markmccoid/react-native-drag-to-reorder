@@ -22,6 +22,7 @@ import * as Haptics from "expo-haptics";
 import { DragIndicatorProps, DragIndicatorConfig } from "./DefaultDragIndicator";
 
 import { Positions } from "./helperFunctions";
+import { usePositions } from "./DragSortContext";
 
 interface Props {
   id: number | string;
@@ -29,7 +30,6 @@ interface Props {
   scrollViewRef: React.RefObject<Animated.ScrollView>;
   numberOfItems: number;
   handlePosition: "left" | "right";
-  positions: Animated.SharedValue<Positions>;
   containerHeight: number;
   handle: React.FC;
   enableHapticFeedback: boolean;
@@ -71,7 +71,6 @@ const MoveableItem = ({
   scrollViewRef,
   numberOfItems,
   handlePosition,
-  positions,
   containerHeight,
   updatePositions,
   children,
@@ -82,6 +81,7 @@ const MoveableItem = ({
   dragIndicatorConfig,
   enableHapticFeedback,
 }: Props) => {
+  const positions = usePositions();
   const Handle = handle;
   const DragIndicator = dragIndicator;
   const moving = useSharedValue(false);
